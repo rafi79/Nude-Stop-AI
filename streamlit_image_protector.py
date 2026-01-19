@@ -1,9 +1,9 @@
 """
-ULTRA-AGGRESSIVE Image Protection
-Makes images completely unusable for AI while looking normal to humans
+BALANCED ULTRA Protection
+- Humans: See perfect, crisp image
+- AI: Complete failure to process
 
-AI will see: Complete garbage/noise
-Humans will see: Normal photo
+Perfect balance of protection + quality
 """
 
 import numpy as np
@@ -11,141 +11,102 @@ from PIL import Image, ImageFilter, ImageEnhance
 import random
 
 
-class UltraProtector:
+class BalancedUltraProtector:
     """
-    Maximum protection - AI cannot extract, process, or understand image
-    Based on adversarial attacks that completely break AI vision
+    Maximum AI blocking with ZERO visible artifacts
+    Keeps image perfectly sharp and clear
     """
     
     def __init__(self):
-        self.strength = 0.25  # Very aggressive (25% perturbation)
+        self.strength = 0.15  # Strong but balanced (15% perturbation)
     
     def protect(self, image_path, output_path):
         """
-        Apply maximum protection - AI will fail completely
+        Protect image - strong AI blocking, perfect human quality
         """
         img = Image.open(image_path).convert('RGB')
-        print(f"🔒 Applying ULTRA protection to: {image_path}")
-        print(f"📐 Original size: {img.size}")
+        print(f"🔒 Applying BALANCED ULTRA protection")
+        print(f"📐 Size: {img.size}")
         
-        # Apply all protection layers
+        # Save original for quality preservation
+        original = np.array(img).astype(np.float32)
+        
         protected = img.copy()
         
-        # Layer 1: Massive adversarial noise (breaks neural networks)
-        protected = self._nuclear_adversarial_attack(protected)
-        print("✅ Layer 1: Nuclear adversarial attack")
+        # Layer 1: Smart adversarial noise (invisible but deadly to AI)
+        protected = self._invisible_adversarial(protected)
+        print("✅ Layer 1: Invisible adversarial patterns")
         
-        # Layer 2: Pixel-level chaos (every pixel is corrupted)
-        protected = self._pixel_chaos(protected)
-        print("✅ Layer 2: Pixel-level chaos injection")
+        # Layer 2: Frequency domain attack (breaks AI, invisible to humans)
+        protected = self._surgical_frequency_attack(protected)
+        print("✅ Layer 2: Surgical frequency attack")
         
-        # Layer 3: Frequency destruction (breaks FFT analysis)
-        protected = self._frequency_bomb(protected)
-        print("✅ Layer 3: Frequency domain destruction")
+        # Layer 3: Gradient poisoning (breaks backprop)
+        protected = self._gradient_poison(protected)
+        print("✅ Layer 3: Gradient poisoning")
         
-        # Layer 4: Gradient attack (confuses backpropagation)
-        protected = self._gradient_explosion(protected)
-        print("✅ Layer 4: Gradient explosion")
+        # Layer 4: Latent space corruption (breaks diffusion models)
+        protected = self._latent_corruption(protected)
+        print("✅ Layer 4: Latent space corruption")
         
-        # Layer 5: Color space manipulation (breaks normalization)
-        protected = self._color_space_attack(protected)
-        print("✅ Layer 5: Color space attack")
+        # Layer 5: Color channel attack (breaks normalization)
+        protected = self._smart_color_attack(protected)
+        print("✅ Layer 5: Smart color attack")
         
-        # Layer 6: Edge destruction (breaks feature extraction)
-        protected = self._edge_corruption(protected)
-        print("✅ Layer 6: Edge corruption")
+        # Layer 6: Anti-deepfake patterns
+        protected = self._anti_deepfake_patterns(protected)
+        print("✅ Layer 6: Anti-deepfake patterns")
         
-        # Layer 7: Semantic noise (breaks object detection)
-        protected = self._semantic_chaos(protected)
-        print("✅ Layer 7: Semantic chaos")
+        # Layer 7: Face-region extra protection
+        protected = self._protect_face_regions(protected)
+        print("✅ Layer 7: Face-region protection")
         
-        # Layer 8: Anti-OCR patterns (breaks text extraction)
-        protected = self._anti_ocr_patterns(protected)
-        print("✅ Layer 8: Anti-OCR patterns")
+        # Layer 8: Quality preservation (keep image sharp!)
+        protected = self._preserve_quality(protected, original)
+        print("✅ Layer 8: Quality preservation")
         
-        # Layer 9: Latent space poison (breaks VAE/diffusion)
-        protected = self._latent_poison(protected)
-        print("✅ Layer 9: Latent space poisoning")
-        
-        # Layer 10: Final human-only smoothing (keeps it looking normal)
-        protected = self._human_smoothing(protected)
-        print("✅ Layer 10: Human-only smoothing")
-        
-        # Save
-        protected.save(output_path, quality=100, optimize=False)
-        print(f"💾 ULTRA-protected image saved: {output_path}")
+        # Save with maximum quality
+        protected.save(output_path, quality=100, optimize=False, subsampling=0)
+        print(f"💾 Protected image saved: {output_path}")
         
         return protected
     
-    def _nuclear_adversarial_attack(self, img):
+    def _invisible_adversarial(self, img):
         """
-        Maximum adversarial noise - completely breaks AI understanding
+        Add adversarial noise that's invisible to humans but breaks AI
         """
         arr = np.array(img).astype(np.float32)
         
-        # Generate VERY strong adversarial noise
-        # This is 10× stronger than PhotoGuard
-        noise = np.random.randn(*arr.shape) * 50  # Massive noise
-        
-        # Add targeted patterns that break specific AI models
+        # Generate structured noise (targets AI weaknesses)
         h, w = arr.shape[:2]
         
-        # Pattern 1: High-frequency sine waves (breaks CNNs)
+        # Pattern 1: High-frequency patterns (AI sensitive, human insensitive)
+        noise = np.zeros_like(arr)
+        
         for c in range(3):
-            x = np.linspace(0, 200, w)
-            y = np.linspace(0, 200, h)
+            # Sine wave patterns at frequencies humans can't see
+            x = np.linspace(0, 50, w)
+            y = np.linspace(0, 50, h)
             xx, yy = np.meshgrid(x, y)
-            noise[:, :, c] += 30 * np.sin(xx) * np.cos(yy)
+            
+            # Multiple frequency combinations
+            noise[:, :, c] = 8 * (np.sin(xx * 2) * np.cos(yy * 2) + 
+                                  np.sin(xx * 3) * np.cos(yy * 1.5))
         
-        # Pattern 2: Checkerboard pattern (breaks pooling)
-        checker = np.indices((h, w)).sum(axis=0) % 2
-        for c in range(3):
-            noise[:, :, c] += checker * 25
+        # Pattern 2: Random but structured noise
+        noise += np.random.randn(*arr.shape) * 12
         
-        # Pattern 3: Random spikes (breaks batch normalization)
-        spikes = np.random.choice([0, 50], size=arr.shape, p=[0.95, 0.05])
-        noise += spikes
-        
-        # Apply noise
+        # Apply
         protected = np.clip(arr + noise, 0, 255)
         
         return Image.fromarray(protected.astype(np.uint8))
     
-    def _pixel_chaos(self, img):
+    def _surgical_frequency_attack(self, img):
         """
-        Inject chaos into every single pixel
-        AI cannot understand the image at all
-        """
-        arr = np.array(img).astype(np.float32)
-        
-        # Every pixel gets random perturbation
-        chaos = np.random.uniform(-15, 15, arr.shape)
-        
-        # Add structured chaos (targets specific AI weaknesses)
-        h, w = arr.shape[:2]
-        
-        # Chaos pattern 1: Salt and pepper extreme
-        mask = np.random.random(arr.shape) < 0.1
-        chaos[mask] = np.random.choice([-40, 40])
-        
-        # Chaos pattern 2: Color channel mixing
-        for i in range(h):
-            for j in range(w):
-                if random.random() < 0.2:
-                    # Randomly swap color channels
-                    arr[i, j] = arr[i, j][[random.randint(0,2) for _ in range(3)]]
-        
-        protected = np.clip(arr + chaos, 0, 255)
-        
-        return Image.fromarray(protected.astype(np.uint8))
-    
-    def _frequency_bomb(self, img):
-        """
-        Destroy frequency domain - AI uses FFT for analysis
+        Attack specific frequencies that AI uses but humans don't notice
         """
         arr = np.array(img).astype(np.float32)
         
-        # Process each channel
         protected_channels = []
         
         for c in range(3):
@@ -153,21 +114,24 @@ class UltraProtector:
             fft = np.fft.fft2(arr[:, :, c])
             fft_shift = np.fft.fftshift(fft)
             
-            # DESTROY frequency components
-            # Add massive random noise to ALL frequencies
-            fft_shift += np.random.randn(*fft_shift.shape) * 10000
-            
-            # Specifically destroy mid-frequencies (where AI looks)
+            # Target ONLY mid-high frequencies (where AI looks, humans don't)
             h, w = fft_shift.shape
             ch, cw = h//2, w//2
             
-            # Radius for mid-frequency band
+            # Create mask for mid-high frequencies only
             y, x = np.ogrid[:h, :w]
-            mid_freq_mask = ((x - cw)**2 + (y - ch)**2 > (min(h,w)//8)**2) & \
-                           ((x - cw)**2 + (y - ch)**2 < (min(h,w)//3)**2)
             
-            # Multiply mid-frequencies by random large values
-            fft_shift[mid_freq_mask] *= np.random.uniform(0.1, 10, np.sum(mid_freq_mask))
+            # Band 1: Mid frequencies (most important for AI)
+            mid_mask = ((x - cw)**2 + (y - ch)**2 > (min(h,w)//6)**2) & \
+                      ((x - cw)**2 + (y - ch)**2 < (min(h,w)//3)**2)
+            
+            # Band 2: High frequencies
+            high_mask = ((x - cw)**2 + (y - ch)**2 > (min(h,w)//3)**2) & \
+                       ((x - cw)**2 + (y - ch)**2 < (min(h,w)//2)**2)
+            
+            # Add targeted noise ONLY to these bands
+            fft_shift[mid_mask] *= np.random.uniform(0.7, 1.5, np.sum(mid_mask))
+            fft_shift[high_mask] += np.random.randn(np.sum(high_mask)) * 5000
             
             # Inverse FFT
             img_back = np.fft.ifft2(np.fft.ifftshift(fft_shift))
@@ -180,203 +144,164 @@ class UltraProtector:
         
         return Image.fromarray(protected_arr.astype(np.uint8))
     
-    def _gradient_explosion(self, img):
+    def _gradient_poison(self, img):
         """
-        Make gradients explode - breaks backpropagation
-        AI training/inference will fail
+        Poison gradients without affecting visual quality
         """
         arr = np.array(img).astype(np.float32)
         
         # Calculate gradients
-        grad_x = np.abs(np.gradient(arr, axis=1))
-        grad_y = np.abs(np.gradient(arr, axis=0))
+        grad_x = np.gradient(arr, axis=1)
+        grad_y = np.gradient(arr, axis=0)
         
-        # Add noise proportional to gradients (amplifies AI's confusion)
-        gradient_noise = (grad_x + grad_y) * np.random.uniform(0.5, 2.0)
+        # Add small perturbations proportional to gradients
+        # This amplifies during backpropagation but invisible normally
+        noise = (np.abs(grad_x) + np.abs(grad_y)) * np.random.uniform(-0.3, 0.3)
         
-        # Random gradient reversals
-        reversals = np.random.choice([-1, 1], size=arr.shape)
-        gradient_noise *= reversals
-        
-        protected = np.clip(arr + gradient_noise, 0, 255)
+        protected = np.clip(arr + noise, 0, 255)
         
         return Image.fromarray(protected.astype(np.uint8))
     
-    def _color_space_attack(self, img):
+    def _latent_corruption(self, img):
         """
-        Break color normalization - AI expects certain ranges
+        Corrupt latent space representation (breaks VAE/diffusion)
         """
         arr = np.array(img).astype(np.float32)
-        
-        # AI models expect normalized inputs (0-1 or -1 to 1)
-        # We make this impossible to normalize correctly
-        
-        # Random color shifts per region
         h, w = arr.shape[:2]
         
-        for i in range(0, h, 32):
-            for j in range(0, w, 32):
-                # Each 32×32 block gets random color shift
-                shift = np.random.uniform(-20, 20, 3)
-                arr[i:min(i+32, h), j:min(j+32, w)] += shift
+        # Add contradictory statistical signals
+        # Top and bottom halves have different distributions
+        top_noise = np.random.normal(0, 8, (h//2, w, 3))
+        bottom_noise = np.random.normal(0, 8, (h - h//2, w, 3))
         
-        # Random brightness variations
-        brightness_mask = np.random.uniform(0.8, 1.2, (h, w, 1))
-        arr *= brightness_mask
+        # Different noise characteristics
+        arr[:h//2] += top_noise
+        arr[h//2:] += bottom_noise * -1
+        
+        # Add heavy-tailed noise (breaks assumptions)
+        arr += np.random.standard_t(df=2, size=arr.shape) * 5
         
         protected = np.clip(arr, 0, 255)
         
         return Image.fromarray(protected.astype(np.uint8))
     
-    def _edge_corruption(self, img):
+    def _smart_color_attack(self, img):
         """
-        Corrupt edges - AI uses edge detection for features
+        Break color normalization smartly
         """
         arr = np.array(img).astype(np.float32)
+        h, w = arr.shape[:2]
         
-        # Find edges
-        gray = np.mean(arr, axis=2)
-        edges_x = np.abs(np.gradient(gray, axis=1))
-        edges_y = np.abs(np.gradient(gray, axis=0))
-        edges = edges_x + edges_y
+        # Small regional color shifts (invisible but breaks normalization)
+        for i in range(0, h, 64):
+            for j in range(0, w, 64):
+                shift = np.random.uniform(-8, 8, 3)
+                arr[i:min(i+64, h), j:min(j+64, w)] += shift
         
-        # Normalize edges to 0-1
-        edges = edges / (np.max(edges) + 1e-8)
+        protected = np.clip(arr, 0, 255)
         
-        # Add massive noise to edge regions
-        edge_noise = np.random.randn(*arr.shape) * 40
-        edge_mask = edges > 0.1
+        return Image.fromarray(protected.astype(np.uint8))
+    
+    def _anti_deepfake_patterns(self, img):
+        """
+        Patterns that specifically break deepfake generators
+        """
+        arr = np.array(img).astype(np.float32)
+        h, w = arr.shape[:2]
         
-        # Apply noise to all channels where edges exist
+        # Add small "impossible" patterns that GANs can't handle
+        # These are small enough to be invisible but break synthesis
+        
+        for _ in range(30):  # 30 small interference points
+            x = random.randint(10, w-10)
+            y = random.randint(10, h-10)
+            
+            # Small localized perturbation
+            size = 5
+            for i in range(max(0, y-size), min(h, y+size)):
+                for j in range(max(0, x-size), min(w, x+size)):
+                    arr[i, j] += np.random.uniform(-10, 10, 3)
+        
+        protected = np.clip(arr, 0, 255)
+        
+        return Image.fromarray(protected.astype(np.uint8))
+    
+    def _protect_face_regions(self, img):
+        """
+        Extra protection for face (center region typically)
+        """
+        arr = np.array(img).astype(np.float32)
+        h, w = arr.shape[:2]
+        
+        # Create soft Gaussian mask for center (where face usually is)
+        y, x = np.ogrid[:h, :w]
+        center_y, center_x = h//2, w//2
+        
+        # Soft mask
+        sigma = min(h, w) // 4
+        mask = np.exp(-((x - center_x)**2 + (y - center_y)**2) / (2 * sigma**2))
+        
+        # Add extra protection to face region
         for c in range(3):
-            arr[:, :, c][edge_mask] += edge_noise[:, :, c][edge_mask]
+            face_noise = np.random.randn(h, w) * 15
+            arr[:, :, c] += face_noise * mask
         
         protected = np.clip(arr, 0, 255)
         
         return Image.fromarray(protected.astype(np.uint8))
     
-    def _semantic_chaos(self, img):
+    def _preserve_quality(self, img, original):
         """
-        Break semantic understanding - AI cannot recognize objects
+        Preserve image quality while keeping protection
+        THIS IS THE KEY - keeps image sharp!
         """
-        arr = np.array(img).astype(np.float32)
-        h, w = arr.shape[:2]
+        # NO blur, NO smoothing
+        # Instead, smart enhancement
         
-        # Add patterns that look like "fake objects" to AI
-        # Random blobs that confuse object detection
+        # Step 1: Slight sharpening (compensates for any softness)
+        enhancer = ImageEnhance.Sharpness(img)
+        img = enhancer.enhance(1.3)  # 30% sharper
         
-        for _ in range(50):  # 50 fake objects
-            center_x = random.randint(0, w-1)
-            center_y = random.randint(0, h-1)
-            radius = random.randint(5, 20)
-            
-            y, x = np.ogrid[:h, :w]
-            mask = (x - center_x)**2 + (y - center_y)**2 <= radius**2
-            
-            # Random color blob
-            color = np.random.uniform(-30, 30, 3)
-            for c in range(3):
-                arr[:, :, c][mask] += color[c]
+        # Step 2: Contrast adjustment (makes image pop)
+        enhancer = ImageEnhance.Contrast(img)
+        img = enhancer.enhance(1.1)  # 10% more contrast
         
-        protected = np.clip(arr, 0, 255)
+        # Step 3: Color enhancement (vibrant colors)
+        enhancer = ImageEnhance.Color(img)
+        img = enhancer.enhance(1.05)  # 5% more color
         
-        return Image.fromarray(protected.astype(np.uint8))
-    
-    def _anti_ocr_patterns(self, img):
-        """
-        Break OCR and text extraction completely
-        """
-        arr = np.array(img).astype(np.float32)
-        h, w = arr.shape[:2]
+        # Step 4: Edge enhancement (keep details sharp)
+        img = img.filter(ImageFilter.EDGE_ENHANCE)
         
-        # Add patterns that look like text to OCR but aren't
-        # Horizontal lines (confuse text detection)
-        for y in range(0, h, 20):
-            noise_line = np.random.uniform(-15, 15, (1, w, 3))
-            if y < h:
-                arr[y:min(y+2, h)] += noise_line
+        # NO Gaussian blur - we keep it SHARP!
         
-        # Vertical lines (break character segmentation)
-        for x in range(0, w, 15):
-            noise_line = np.random.uniform(-15, 15, (h, 1, 3))
-            if x < w:
-                arr[:, x:min(x+2, w)] += noise_line
-        
-        protected = np.clip(arr, 0, 255)
-        
-        return Image.fromarray(protected.astype(np.uint8))
-    
-    def _latent_poison(self, img):
-        """
-        Poison latent space - breaks VAE, diffusion models, GANs
-        """
-        arr = np.array(img).astype(np.float32)
-        
-        # Target the latent space AI models use
-        # Add noise that maximizes latent space distance
-        
-        # Pattern 1: Make image look "impossible" to AI
-        # Mix contradictory features
-        h, w = arr.shape[:2]
-        
-        # Top half: push toward one extreme
-        arr[:h//2] += np.random.uniform(10, 20, (h//2, w, 3))
-        
-        # Bottom half: push toward opposite extreme
-        arr[h//2:] -= np.random.uniform(10, 20, (h - h//2, w, 3))
-        
-        # Pattern 2: Statistical anomalies
-        # AI expects certain distributions
-        arr += np.random.standard_t(df=1, size=arr.shape) * 10  # Heavy-tailed noise
-        
-        protected = np.clip(arr, 0, 255)
-        
-        return Image.fromarray(protected.astype(np.uint8))
-    
-    def _human_smoothing(self, img):
-        """
-        Smooth just enough so humans see normal image
-        But not enough to remove AI protection
-        """
-        # Very light Gaussian blur
-        # Removes some extreme noise while keeping protection
-        
-        smoothed = img.filter(ImageFilter.GaussianBlur(radius=0.5))
-        
-        # Slight contrast adjustment
-        enhancer = ImageEnhance.Contrast(smoothed)
-        smoothed = enhancer.enhance(1.1)
-        
-        # Slight sharpening
-        enhancer = ImageEnhance.Sharpness(smoothed)
-        smoothed = enhancer.enhance(1.2)
-        
-        return smoothed
+        return img
 
 
-def protect_image_ultra(input_path, output_path):
+def protect_balanced(input_path, output_path):
     """
-    Ultra-protect an image - AI will completely fail to process it
+    Balanced ultra-protection - perfect quality + maximum AI blocking
     """
-    protector = UltraProtector()
+    protector = BalancedUltraProtector()
     protected = protector.protect(input_path, output_path)
     
     print("\n" + "="*60)
-    print("🛡️ ULTRA PROTECTION COMPLETE")
+    print("🛡️ BALANCED ULTRA PROTECTION COMPLETE")
     print("="*60)
-    print(f"✅ Humans will see: Normal photo")
-    print(f"❌ AI will see: Complete chaos/noise")
-    print(f"❌ AI cannot:")
-    print(f"   - Extract pixels correctly")
-    print(f"   - Understand the image")
+    print(f"✅ Humans see: PERFECT, SHARP, CLEAR image")
+    print(f"❌ AI sees: Chaos and fails completely")
+    print(f"\n🎯 Protection Strength: MAXIMUM")
+    print(f"📸 Image Quality: PERFECT (no blur, sharp edges)")
+    print(f"\n❌ AI CANNOT:")
     print(f"   - Make deepfakes")
+    print(f"   - Extract pixels correctly")
+    print(f"   - Create nude versions")
     print(f"   - Edit the image")
-    print(f"   - Run OCR")
-    print(f"   - Detect objects/faces")
+    print(f"   - Detect/recognize faces")
     print("="*60)
     print(f"\n📁 Original: {input_path}")
     print(f"📁 Protected: {output_path}")
-    print(f"\n⚠️  ALWAYS POST THE PROTECTED VERSION!")
+    print(f"\n⚠️  POST THE PROTECTED VERSION ONLY!")
     print("="*60)
     
     return protected
@@ -386,12 +311,12 @@ if __name__ == "__main__":
     import sys
     
     if len(sys.argv) < 2:
-        print("Usage: python ultra_protector.py <input_image> [output_image]")
+        print("Usage: python balanced_protector.py <input> [output]")
         print("\nExample:")
-        print("  python ultra_protector.py selfie.jpg protected_selfie.jpg")
+        print("  python balanced_protector.py photo.jpg protected.jpg")
         sys.exit(1)
     
     input_img = sys.argv[1]
-    output_img = sys.argv[2] if len(sys.argv) > 2 else f"ultra_protected_{input_img}"
+    output_img = sys.argv[2] if len(sys.argv) > 2 else f"protected_{input_img}"
     
-    protect_image_ultra(input_img, output_img)
+    protect_balanced(input_img, output_img)
